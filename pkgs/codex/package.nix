@@ -9,6 +9,7 @@
   electron_40,
   gnumake,
   pkg-config,
+  libicns,
   sources,
 }: let
   betterSqlite3Version = sources.better-sqlite3.version;
@@ -32,6 +33,7 @@ in
       electron_40
       gnumake
       pkg-config
+      libicns
     ];
 
     buildInputs = [
@@ -118,28 +120,28 @@ in
       cd app-extracted
 
       # Configure npm for Electron-specific native module compilation
-          export npm_config_target=40.0.0
-          export npm_config_runtime=electron
-          export npm_config_nodedir=${electron_40.headers}
-          export HOME=$TMPDIR
+      export npm_config_target=40.0.0
+      export npm_config_runtime=electron
+      export npm_config_nodedir=${electron_40.headers}
+      export HOME=$TMPDIR
 
-          build_native_module() {
-            local module_name="$1"
-            local module_tarball="$2"
+      build_native_module() {
+        local module_name="$1"
+        local module_tarball="$2"
 
-            echo "Building $module_name for Electron..."
-            rm -rf "node_modules/$module_name"
-            mkdir -p "node_modules/$module_name"
-            tar -xzf "$module_tarball" --strip-components=1 -C "node_modules/$module_name"
-            cd "node_modules/$module_name"
-            ${nodejs_20}/bin/node ${nodejs_20}/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js rebuild --release
-            cd ../..
-          }
+        echo "Building $module_name for Electron..."
+        rm -rf "node_modules/$module_name"
+        mkdir -p "node_modules/$module_name"
+        tar -xzf "$module_tarball" --strip-components=1 -C "node_modules/$module_name"
+        cd "node_modules/$module_name"
+        ${nodejs_20}/bin/node ${nodejs_20}/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js rebuild --release
+        cd ../..
+      }
 
-          build_native_module better-sqlite3 ${betterSqlite3Src}
-          build_native_module node-pty ${nodePtySrc}
+      build_native_module better-sqlite3 ${betterSqlite3Src}
+      build_native_module node-pty ${nodePtySrc}
 
-          cd ..
+      cd ..
 
       # Repack app.asar with rebuilt native modules
       echo "Repacking app.asar with native modules..."
@@ -153,81 +155,81 @@ in
     '';
 
     installPhase = ''
-                            mkdir -p $out/lib/codex-desktop
-                            mkdir -p $out/bin
-                            mkdir -p $out/share/applications
+      mkdir -p $out/lib/codex-desktop
+      mkdir -p $out/bin
+      mkdir -p $out/share/applications
 
-                            # Copy Electron binary and resources from electron_40
-                            echo "Setting up Electron 40..."
-                            cp ${electron_40}/libexec/electron/electron $out/lib/codex-desktop/
+      # Copy Electron binary and resources from electron_40
+      echo "Setting up Electron 40..."
+      cp ${electron_40}/libexec/electron/electron $out/lib/codex-desktop/
 
-                            # Copy all Electron resources and supporting files
-                            mkdir -p $out/lib/codex-desktop/resources
+      # Copy all Electron resources and supporting files
+      mkdir -p $out/lib/codex-desktop/resources
 
-                            # Copy pak files and other resources
-                            for f in ${electron_40}/libexec/electron/*.pak; do
-                              [ -e "$f" ] && cp "$f" $out/lib/codex-desktop/
-                            done
+      # Copy pak files and other resources
+      for f in ${electron_40}/libexec/electron/*.pak; do
+        [ -e "$f" ] && cp "$f" $out/lib/codex-desktop/
+      done
 
-                            # Copy data files
-                            for f in ${electron_40}/libexec/electron/*.dat; do
-                              [ -e "$f" ] && cp "$f" $out/lib/codex-desktop/
-                            done
+      # Copy data files
+      for f in ${electron_40}/libexec/electron/*.dat; do
+        [ -e "$f" ] && cp "$f" $out/lib/codex-desktop/
+      done
 
-                            # Copy v8 snapshot
-                            for f in ${electron_40}/libexec/electron/v8_context_snapshot*.bin; do
-                              [ -e "$f" ] && cp "$f" $out/lib/codex-desktop/
-                            done
-                            for f in ${electron_40}/libexec/electron/snapshot_blob*.bin; do
-                              [ -e "$f" ] && cp "$f" $out/lib/codex-desktop/
-                            done
+      # Copy v8 snapshot
+      for f in ${electron_40}/libexec/electron/v8_context_snapshot*.bin; do
+        [ -e "$f" ] && cp "$f" $out/lib/codex-desktop/
+      done
+      for f in ${electron_40}/libexec/electron/snapshot_blob*.bin; do
+        [ -e "$f" ] && cp "$f" $out/lib/codex-desktop/
+      done
 
-                            # Copy locales required by Chromium runtime
-                            if [ -d "${electron_40}/libexec/electron/locales" ]; then
-                              cp -r "${electron_40}/libexec/electron/locales" $out/lib/codex-desktop/
-                            fi
+      # Copy locales required by Chromium runtime
+      if [ -d "${electron_40}/libexec/electron/locales" ]; then
+        cp -r "${electron_40}/libexec/electron/locales" $out/lib/codex-desktop/
+      fi
 
-                            # Copy crashpad handler
-                            if [ -f "${electron_40}/libexec/electron/chrome_crashpad_handler" ]; then
-                              cp "${electron_40}/libexec/electron/chrome_crashpad_handler" $out/lib/codex-desktop/
-                            fi
+      # Copy crashpad handler
+      if [ -f "${electron_40}/libexec/electron/chrome_crashpad_handler" ]; then
+        cp "${electron_40}/libexec/electron/chrome_crashpad_handler" $out/lib/codex-desktop/
+      fi
 
-                            # Copy any other necessary binaries and shared libraries
-                            for bin in ${electron_40}/libexec/electron/chrome_*.so ${electron_40}/libexec/electron/libEGL*.so* ${electron_40}/libexec/electron/libGLES*.so* ${electron_40}/libexec/electron/libffmpeg*.so* ${electron_40}/libexec/electron/libvk_swiftshader*.so* ${electron_40}/libexec/electron/libvulkan*.so*; do
-                              [ -e "$bin" ] && cp "$bin" $out/lib/codex-desktop/ 2>/dev/null || true
-                            done
+      # Copy any other necessary binaries and shared libraries
+      for bin in ${electron_40}/libexec/electron/chrome_*.so ${electron_40}/libexec/electron/libEGL*.so* ${electron_40}/libexec/electron/libGLES*.so* ${electron_40}/libexec/electron/libffmpeg*.so* ${electron_40}/libexec/electron/libvk_swiftshader*.so* ${electron_40}/libexec/electron/libvulkan*.so*; do
+        [ -e "$bin" ] && cp "$bin" $out/lib/codex-desktop/ 2>/dev/null || true
+      done
 
-                            # Copy patched app.asar
-                            if [ -f repacked.asar ]; then
-                              cp repacked.asar $out/lib/codex-desktop/resources/app.asar
-                              if [ -d repacked.asar.unpacked ]; then
-                                cp -r repacked.asar.unpacked $out/lib/codex-desktop/resources/app.asar.unpacked
-                              fi
-                              if [ -f app-extracted/node_modules/better-sqlite3/build/Release/better_sqlite3.node ]; then
-                                mkdir -p $out/lib/codex-desktop/resources/app.asar.unpacked/node_modules/better-sqlite3/build/Release
-                                cp app-extracted/node_modules/better-sqlite3/build/Release/better_sqlite3.node \
-                                  $out/lib/codex-desktop/resources/app.asar.unpacked/node_modules/better-sqlite3/build/Release/
-                              fi
-                              if [ -d app-extracted/node_modules/node-pty/build/Release ]; then
-                                mkdir -p $out/lib/codex-desktop/resources/app.asar.unpacked/node_modules/node-pty/build/Release
-                                cp -r app-extracted/node_modules/node-pty/build/Release/* \
-                                  $out/lib/codex-desktop/resources/app.asar.unpacked/node_modules/node-pty/build/Release/
-                              fi
-                            elif [ -f "Codex.app/Contents/Resources/app.asar" ]; then
-                              cp "Codex.app/Contents/Resources/app.asar" $out/lib/codex-desktop/resources/app.asar
-                            else
-                              echo "Error: No app.asar found"
-                              exit 1
-                            fi
+      # Copy patched app.asar
+      if [ -f repacked.asar ]; then
+        cp repacked.asar $out/lib/codex-desktop/resources/app.asar
+        if [ -d repacked.asar.unpacked ]; then
+          cp -r repacked.asar.unpacked $out/lib/codex-desktop/resources/app.asar.unpacked
+        fi
+        if [ -f app-extracted/node_modules/better-sqlite3/build/Release/better_sqlite3.node ]; then
+          mkdir -p $out/lib/codex-desktop/resources/app.asar.unpacked/node_modules/better-sqlite3/build/Release
+          cp app-extracted/node_modules/better-sqlite3/build/Release/better_sqlite3.node \
+            $out/lib/codex-desktop/resources/app.asar.unpacked/node_modules/better-sqlite3/build/Release/
+        fi
+        if [ -d app-extracted/node_modules/node-pty/build/Release ]; then
+          mkdir -p $out/lib/codex-desktop/resources/app.asar.unpacked/node_modules/node-pty/build/Release
+          cp -r app-extracted/node_modules/node-pty/build/Release/* \
+            $out/lib/codex-desktop/resources/app.asar.unpacked/node_modules/node-pty/build/Release/
+        fi
+      elif [ -f "Codex.app/Contents/Resources/app.asar" ]; then
+        cp "Codex.app/Contents/Resources/app.asar" $out/lib/codex-desktop/resources/app.asar
+      else
+        echo "Error: No app.asar found"
+        exit 1
+      fi
 
-                            # Copy webview content
-                            if [ -d "app-extracted/webview" ]; then
-                              mkdir -p $out/lib/codex-desktop/content/webview
-                              cp -r app-extracted/webview/* $out/lib/codex-desktop/content/webview/
-                            fi
+      # Copy webview content
+      if [ -d "app-extracted/webview" ]; then
+        mkdir -p $out/lib/codex-desktop/content/webview
+        cp -r app-extracted/webview/* $out/lib/codex-desktop/content/webview/
+      fi
 
-                  # Create launcher script with proper library paths
-                  cat > $out/bin/codex-desktop << 'WRAPPER'
+      # Create launcher script with proper library paths
+      cat > $out/bin/codex-desktop << 'WRAPPER'
       #!/bin/bash
       export LD_LIBRARY_PATH="${electron_40}/lib:${electron_40}/libexec/electron:$LD_LIBRARY_PATH"
       export NIXOS_OZONE_WL=1
@@ -260,21 +262,30 @@ in
         --enable-wayland-ime \
         resources/app.asar "$@"
       WRAPPER
-                  chmod +x $out/bin/codex-desktop
+      chmod +x $out/bin/codex-desktop
 
-                        # Create .desktop file
-                        mkdir -p $out/share/applications
-                        desktopFile="$out/share/applications/codex-desktop.desktop"
-                        {
-                          echo "[Desktop Entry]"
-                          echo "Name=Codex Desktop"
-                          echo "Exec=$out/bin/codex-desktop"
-                          echo "Icon=text-editor"
-                          echo "Type=Application"
-                          echo "Categories=Development;IDE;"
-                          echo "StartupWMClass=Codex"
-                          echo "Comment=OpenAI Codex Desktop Application"
-                        } > "$desktopFile"
+      # Extract and install icon
+      mkdir -p $out/share/icons/hicolor/512x512/apps
+      # libicns will extract all elements at different sizes. We take the 512x512 one.
+      icns2png -x "Codex.app/Contents/Resources/electron.icns" -o $out/share/icons/hicolor/512x512/apps/ || true
+      if [ -f $out/share/icons/hicolor/512x512/apps/electron_512x512x32.png ]; then
+        mv $out/share/icons/hicolor/512x512/apps/electron_512x512x32.png $out/share/icons/hicolor/512x512/apps/codex-desktop.png
+        rm -f $out/share/icons/hicolor/512x512/apps/electron_*.png
+      fi
+      
+      # Create .desktop file
+      mkdir -p $out/share/applications
+      desktopFile="$out/share/applications/codex-desktop.desktop"
+      {
+        echo "[Desktop Entry]"
+        echo "Name=Codex Desktop"
+        echo "Exec=$out/bin/codex-desktop"
+        echo "Icon=codex-desktop"
+        echo "Type=Application"
+        echo "Categories=Development;IDE;"
+        echo "StartupWMClass=Codex"
+        echo "Comment=OpenAI Codex Desktop Application"
+      } > "$desktopFile"
     '';
 
     dontStrip = true;

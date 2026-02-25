@@ -61,8 +61,7 @@ ai-nix/
 │   └── generated.json
 └── pkgs/
     └── codex/         # Codex Desktop packaging
-        ├── package.nix
-        └── install.sh
+        └── package.nix
 ```
 
 New AI tools go under `pkgs/<tool-name>/` with their own `package.nix` and optional `README.md`.
