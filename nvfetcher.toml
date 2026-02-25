@@ -1,0 +1,16 @@
+# nvfetcher configuration for ai-nix
+# Run `nvfetcher` at the project root to regenerate _sources/generated.{nix,json}
+
+[codex-dmg]
+src.manual = "0.1.0"
+fetch.url = "https://persistent.oaistatic.com/codex-app-prod/Codex.dmg"
+
+[better-sqlite3]
+src.webpage = "https://registry.npmjs.org/better-sqlite3/latest"
+src.regex = "\"version\":\"([^\"]+)\""
+fetch.url = "https://registry.npmjs.org/better-sqlite3/-/better-sqlite3-$ver.tgz"
+
+[node-pty]
+src.webpage = "https://registry.npmjs.org/node-pty/latest"
+src.regex = "\"version\":\"([^\"]+)\""
+fetch.url = "https://registry.npmjs.org/node-pty/-/node-pty-$ver.tgz"

@@ -1,0 +1,47 @@
+{
+    "better-sqlite3": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "better-sqlite3",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-rDv6pQsx0fyHj4S2Sz+n7BtbZgO5vgibBQH49ZAKx+c=",
+            "type": "url",
+            "url": "https://registry.npmjs.org/better-sqlite3/-/better-sqlite3-12.6.2.tgz"
+        },
+        "version": "12.6.2"
+    },
+    "codex-dmg": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "codex-dmg",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-ORJNHiI1oGanVf0/I3BDjMdyAOSzkq7qHGlbEZXIH2k=",
+            "type": "url",
+            "url": "https://persistent.oaistatic.com/codex-app-prod/Codex.dmg"
+        },
+        "version": "0.1.0"
+    },
+    "node-pty": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "node-pty",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-x1F/GQg93LBfJ2kEaA6ysRprXsq3eLjk5WhabWRbP2A=",
+            "type": "url",
+            "url": "https://registry.npmjs.org/node-pty/-/node-pty-1.1.0.tgz"
+        },
+        "version": "1.1.0"
+    }
+}
