@@ -4,20 +4,34 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    systems.url = "github:nix-systems/default";
   };
 
   outputs =
-    inputs@{flake-parts, ...}:
-    flake-parts.lib.mkFlake {inherit inputs;} {
-      systems = ["x86_64-linux" "aarch64-linux"];
+    inputs@{ flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = import inputs.systems;
 
-      perSystem = {
-        pkgs,
-        ...
-      }: let
-        sources = pkgs.callPackage ./_sources/generated.nix {};
-      in {
-        packages.codex-desktop = pkgs.callPackage ./pkgs/codex/package.nix {inherit sources;};
-      };
+      perSystem =
+        {
+          pkgs,
+          ...
+        }:
+        {
+          devShells.default = pkgs.mkShell {
+            packages = with pkgs; [ nixfmt ];
+          };
+
+          packages =
+            let
+              sources = pkgs.callPackage ./_sources/generated.nix { };
+            in
+            rec {
+              codex = pkgs.callPackage ./pkgs/codex-cli/package.nix { };
+              codex-desktop = pkgs.callPackage ./pkgs/codex-app/package.nix {
+                inherit sources codex;
+              };
+            };
+        };
     };
 }
