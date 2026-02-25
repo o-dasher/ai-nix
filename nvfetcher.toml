@@ -5,12 +5,13 @@
 src.manual = "0.1.0"
 fetch.url = "https://persistent.oaistatic.com/codex-app-prod/Codex.dmg"
 
+# These versions must match what's bundled inside the Codex DMG.
+# Update them when upstream ships a new DMG with bumped dependencies.
+
 [better-sqlite3]
-src.webpage = "https://registry.npmjs.org/better-sqlite3/latest"
-src.regex = "\"version\":\"([^\"]+)\""
+src.manual = "12.5.0"
 fetch.url = "https://registry.npmjs.org/better-sqlite3/-/better-sqlite3-$ver.tgz"
 
 [node-pty]
-src.webpage = "https://registry.npmjs.org/node-pty/latest"
-src.regex = "\"version\":\"([^\"]+)\""
+src.manual = "1.1.0"
 fetch.url = "https://registry.npmjs.org/node-pty/-/node-pty-$ver.tgz"

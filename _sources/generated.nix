@@ -8,10 +8,10 @@
 {
   better-sqlite3 = {
     pname = "better-sqlite3";
-    version = "12.6.2";
+    version = "12.5.0";
     src = fetchurl {
-      url = "https://registry.npmjs.org/better-sqlite3/-/better-sqlite3-12.6.2.tgz";
-      sha256 = "sha256-rDv6pQsx0fyHj4S2Sz+n7BtbZgO5vgibBQH49ZAKx+c=";
+      url = "https://registry.npmjs.org/better-sqlite3/-/better-sqlite3-12.5.0.tgz";
+      sha256 = "sha256-CjzQVUsGPDGFuZEu9wWbhEVaLkEdY3+qAWb++f76BMI=";
     };
   };
   codex-dmg = {
