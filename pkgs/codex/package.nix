@@ -10,6 +10,7 @@
   gnumake,
   pkg-config,
   libicns,
+  codex,
   sources,
 }: let
   betterSqlite3Version = sources.better-sqlite3.version;
@@ -248,11 +249,7 @@ in
       fi
 
       if [ -z "$CODEX_CLI_PATH" ]; then
-        if command -v codex >/dev/null 2>&1; then
-          export CODEX_CLI_PATH="$(command -v codex)"
-        else
-          echo "Warning: Codex CLI not found. Install with: npm i -g @openai/codex" >&2
-        fi
+        export CODEX_CLI_PATH="${codex}/bin/codex"
       fi
 
       cd "$APPDIR/lib/codex-desktop"
@@ -272,7 +269,7 @@ in
         mv $out/share/icons/hicolor/512x512/apps/electron_512x512x32.png $out/share/icons/hicolor/512x512/apps/codex-desktop.png
         rm -f $out/share/icons/hicolor/512x512/apps/electron_*.png
       fi
-      
+
       # Create .desktop file
       mkdir -p $out/share/applications
       desktopFile="$out/share/applications/codex-desktop.desktop"
