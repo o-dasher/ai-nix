@@ -232,14 +232,12 @@ in
       # Create launcher script using makeWrapper
       makeWrapper $out/lib/codex-desktop/electron $out/bin/codex-desktop \
         --prefix LD_LIBRARY_PATH : "${electron_40}/lib:${electron_40}/libexec/electron" \
-        --set NIXOS_OZONE_WL 1 \
-        --set ELECTRON_OZONE_PLATFORM_HINT wayland \
         --set ZELLIJ 0 \
         --set CODEX_CLI_PATH "${codex}/bin/codex" \
         --run 'WEBVIEW_DIR="'$out'/lib/codex-desktop/content/webview"' \
         --run 'if [ -d "$WEBVIEW_DIR" ] && [ -n "$(ls -A "$WEBVIEW_DIR" 2>/dev/null)" ]; then cd "$WEBVIEW_DIR"; ${python3}/bin/python3 -m http.server 5175 > /dev/null 2>&1 & HTTP_PID=$!; trap "kill $HTTP_PID 2>/dev/null" EXIT; fi' \
         --run 'cd "'$out'/lib/codex-desktop"' \
-        --add-flags "--no-sandbox --ozone-platform=wayland --enable-wayland-ime resources/app.asar"
+        --add-flags "--no-sandbox \''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}} resources/app.asar"
 
       # Extract and install icon
       mkdir -p $out/share/icons/hicolor/512x512/apps
