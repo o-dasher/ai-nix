@@ -10,11 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Install Nix
         uses: cachix/install-nix-action@v25
@@ -29,22 +30,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create Pull Request
-        id: cpr
-        uses: peter-evans/create-pull-request@v6
+      - name: Commit and push updates to main
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore(deps): update flake.lock and nvfetcher sources"
-          title: "chore(deps): update dependencies"
-          body: |
-            This PR mechanically updates the `flake.lock` and `nvfetcher` sources.
-            
-            Automated by GitHub Actions.
-          branch: chore/update-dependencies
-          delete-branch: true
-
-      - name: Automerge PR
-        if: steps.cpr.outputs.pull-request-operation == 'created'
-        run: gh pr merge --auto --merge "${{ steps.cpr.outputs.pull-request-number }}"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          commit_message: "chore(deps): update flake.lock and nvfetcher sources"
+          branch: main
