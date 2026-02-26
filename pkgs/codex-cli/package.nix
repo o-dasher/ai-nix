@@ -1,6 +1,9 @@
 {
   codex,
+  lib,
+  libcap,
   rustPlatform,
+  stdenv,
   sources,
 }:
 let
@@ -19,6 +22,8 @@ codex.overrideAttrs (old: {
       sha256 = lockFileSource.outputHash;
     };
   };
+
+  buildInputs = (old.buildInputs or []) ++ lib.optionals stdenv.isLinux [ libcap ];
 
   postFixup = (old.postFixup or "") + ''
     wrapProgram $out/bin/codex --set DISABLE_AUTOUPDATER 1
