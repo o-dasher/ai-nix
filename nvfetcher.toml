@@ -1,6 +1,16 @@
 # nvfetcher configuration for ai-nix
 # Run `nvfetcher` at the project root to regenerate _sources/generated.{nix,json}
 
+[codex-cli]
+src.github = "openai/codex"
+src.prefix = "rust-v"
+fetch.url = "https://github.com/openai/codex/archive/refs/tags/rust-v$ver.tar.gz"
+
+[codex-cli-lockfile]
+src.github = "openai/codex"
+src.prefix = "rust-v"
+fetch.url = "https://raw.githubusercontent.com/openai/codex/rust-v$ver/codex-rs/Cargo.lock"
+
 [codex-dmg]
 src.manual = "0.1.0"
 fetch.url = "https://persistent.oaistatic.com/codex-app-prod/Codex.dmg"

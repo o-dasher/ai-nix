@@ -14,6 +14,22 @@
       sha256 = "sha256-CjzQVUsGPDGFuZEu9wWbhEVaLkEdY3+qAWb++f76BMI=";
     };
   };
+  codex-cli = {
+    pname = "codex-cli";
+    version = "0.105.0";
+    src = fetchurl {
+      url = "https://github.com/openai/codex/archive/refs/tags/rust-v0.105.0.tar.gz";
+      sha256 = "sha256-Mn5dBBhxEpuGMNCQevsmalG7IwGgvPp4mT3uGIJIhMk=";
+    };
+  };
+  codex-cli-lockfile = {
+    pname = "codex-cli-lockfile";
+    version = "0.105.0";
+    src = fetchurl {
+      url = "https://raw.githubusercontent.com/openai/codex/rust-v0.105.0/codex-rs/Cargo.lock";
+      sha256 = "sha256-b0wETiqKjNEoHBg23l9Ypqxg5kCXQhPM5UKpYwMvrnA=";
+    };
+  };
   codex-dmg = {
     pname = "codex-dmg";
     version = "0.1.0";
