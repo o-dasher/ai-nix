@@ -50,7 +50,7 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         run: |
           nix flake check --no-build
-          nix build .#codex .#codex-desktop --no-link
+          nix build .#codex .#codex-desktop --no-link -L
 
       - name: Commit and push updates to main
         if: steps.changes.outputs.changed == 'true'
