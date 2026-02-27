@@ -50,6 +50,9 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         run: |
           nix flake check --no-build
+          while sleep 60; do echo "build heartbeat"; done &
+          heartbeat_pid=$!
+          trap 'kill "$heartbeat_pid"' EXIT
           nix build .#codex .#codex-desktop --no-link -L
 
       - name: Commit and push updates to main
