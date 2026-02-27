@@ -124,6 +124,7 @@ in
       export npm_config_target=40.0.0
       export npm_config_runtime=electron
       export npm_config_nodedir=${electron_40.headers}
+      export npm_config_jobs="''${NIX_BUILD_CORES:-1}"
       export HOME=$TMPDIR
 
       build_native_module() {
@@ -135,7 +136,7 @@ in
         mkdir -p "node_modules/$module_name"
         tar -xzf "$module_tarball" --strip-components=1 -C "node_modules/$module_name"
         cd "node_modules/$module_name"
-        ${nodejs_20}/bin/node ${nodejs_20}/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js rebuild --release
+        ${nodejs_20}/bin/node ${nodejs_20}/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js rebuild --release --jobs "''${NIX_BUILD_CORES:-1}"
         cd ../..
       }
 

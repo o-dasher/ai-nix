@@ -50,10 +50,7 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         run: |
           nix flake check --no-build
-          while sleep 60; do echo "build heartbeat $(date -u +'%Y-%m-%dT%H:%M:%SZ')"; done &
-          heartbeat_pid=$!
-          trap 'kill "$heartbeat_pid" 2>/dev/null || true' EXIT
-          nix build .#codex .#codex-desktop --no-link -L --max-jobs 1 --cores 2
+          nix build .#codex .#codex-desktop --no-link -L --max-jobs 1 --cores 1
 
       - name: Commit and push updates to main
         if: steps.changes.outputs.changed == 'true'
