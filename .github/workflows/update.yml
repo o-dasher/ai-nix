@@ -29,7 +29,7 @@ jobs:
           name: ai-nix
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
-      - name: Update flake.lock
+      - name: Update flake inputs
         run: nix flake update
 
       - name: Update nvfetcher sources
@@ -50,11 +50,11 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         run: |
           nix flake check --no-build
-          nix build .#codex .#codex-desktop --no-link -L --max-jobs 1 --cores 1
+          nix build .#codex-desktop --no-link -L --max-jobs 1 --cores 1
 
       - name: Commit and push updates to main
         if: steps.changes.outputs.changed == 'true'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore(deps): update flake.lock and nvfetcher sources"
+          commit_message: "chore(deps): refresh flake inputs and nvfetcher sources"
           branch: main

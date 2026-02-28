@@ -5,16 +5,21 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     systems.url = "github:nix-systems/default";
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
-    inputs@{ flake-parts, ... }:
+    inputs@{ flake-parts, llm-agents, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = import inputs.systems;
 
       perSystem =
         {
           pkgs,
+          system,
           ...
         }:
         {
@@ -25,10 +30,11 @@
           packages =
             let
               sources = pkgs.callPackage ./_sources/generated.nix { };
+              codex = llm-agents.packages.${system}.codex;
             in
             {
               codex-desktop = pkgs.callPackage ./pkgs/codex-app/package.nix {
-                inherit sources;
+                inherit codex sources;
               };
             };
         };

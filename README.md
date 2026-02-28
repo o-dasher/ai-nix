@@ -8,7 +8,7 @@ Many AI tools ship without first-class Linux support, or their installation stor
 
 - **Packaging each project with Nix** — fully reproducible builds, declarative dependencies, no "works-on-my-machine" issues.
 - **Tracking sources declaratively** — [nvfetcher](https://github.com/berberman/nvfetcher) resolves upstream versions and prefetches hashes, while `nix flake update` refreshes flake inputs when you choose.
-- **Choosing the right packaging layer** — some CLI-based tooling is better handled by `llm-agents.nix`, while `ai-nix` can still package CLI tools when it makes sense.
+- **Choosing the right packaging layer** — some CLI-based tooling is better handled by `llm-agents.nix`, while `ai-nix` can still package CLI tools when it makes sense. `codex-desktop` uses `llm-agents.nix` to supply the matching `codex` CLI.
 
 ## Included packages
 
@@ -28,7 +28,7 @@ Many AI tools ship without first-class Linux support, or their installation stor
 nix run github:o-dasher/ai-nix#codex-desktop
 ```
 
-This flake does not package `codex-cli`. For CLI tools such as `codex`, `llm-agents.nix` is often the better fit, though `ai-nix` can still package CLI tools where that is useful. Make sure `codex` is available on `PATH` or via `CODEX_CLI_PATH` before launching `codex-desktop`.
+This flake does not expose a separate `codex-cli` package. `codex-desktop` uses the `codex` package from `llm-agents.nix`, so the app launches with a matching CLI without relying on your shell `PATH`.
 
 ### Add to your flake
 
