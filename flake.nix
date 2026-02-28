@@ -26,13 +26,9 @@
             let
               sources = pkgs.callPackage ./_sources/generated.nix { };
             in
-            rec {
-              codex = pkgs.callPackage ./pkgs/codex-cli/package.nix {
-                inherit sources;
-                codex = pkgs.codex;
-              };
+            {
               codex-desktop = pkgs.callPackage ./pkgs/codex-app/package.nix {
-                inherit sources codex;
+                inherit sources;
               };
             };
         };

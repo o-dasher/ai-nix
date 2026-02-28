@@ -14,36 +14,6 @@
         },
         "version": "12.5.0"
     },
-    "codex-cli": {
-        "cargoLock": null,
-        "date": null,
-        "extract": null,
-        "name": "codex-cli",
-        "passthru": null,
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-Mn5dBBhxEpuGMNCQevsmalG7IwGgvPp4mT3uGIJIhMk=",
-            "type": "url",
-            "url": "https://github.com/openai/codex/archive/refs/tags/rust-v0.105.0.tar.gz"
-        },
-        "version": "0.105.0"
-    },
-    "codex-cli-lockfile": {
-        "cargoLock": null,
-        "date": null,
-        "extract": null,
-        "name": "codex-cli-lockfile",
-        "passthru": null,
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-b0wETiqKjNEoHBg23l9Ypqxg5kCXQhPM5UKpYwMvrnA=",
-            "type": "url",
-            "url": "https://raw.githubusercontent.com/openai/codex/rust-v0.105.0/codex-rs/Cargo.lock"
-        },
-        "version": "0.105.0"
-    },
     "codex-dmg": {
         "cargoLock": null,
         "date": null,

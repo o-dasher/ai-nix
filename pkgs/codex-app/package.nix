@@ -10,7 +10,6 @@
   gnumake,
   pkg-config,
   libicns,
-  codex,
   sources,
 }: let
   betterSqlite3Version = sources.better-sqlite3.version;
@@ -234,7 +233,7 @@ in
       makeWrapper $out/lib/codex-desktop/electron $out/bin/codex-desktop \
         --prefix LD_LIBRARY_PATH : "${electron_40}/lib:${electron_40}/libexec/electron" \
         --set ZELLIJ 0 \
-        --set CODEX_CLI_PATH "${codex}/bin/codex" \
+        --run 'if [ -z "$CODEX_CLI_PATH" ]; then PATH_CLI="$(command -v codex 2>/dev/null || true)"; if [ -n "$PATH_CLI" ]; then export CODEX_CLI_PATH="$PATH_CLI"; fi; fi' \
         --run 'WEBVIEW_DIR="'$out'/lib/codex-desktop/content/webview"' \
         --run 'if [ -d "$WEBVIEW_DIR" ] && [ -n "$(ls -A "$WEBVIEW_DIR" 2>/dev/null)" ]; then cd "$WEBVIEW_DIR"; ${python3}/bin/python3 -m http.server 5175 > /dev/null 2>&1 & HTTP_PID=$!; trap "kill $HTTP_PID 2>/dev/null" EXIT; fi' \
         --run 'cd "'$out'/lib/codex-desktop"' \

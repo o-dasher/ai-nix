@@ -1,23 +1,23 @@
 # ai-nix
 
-A Nix flake that groups multiple AI-related projects into a single, reproducible, and auto-updatable packaging layer for Linux.
+A Nix flake that groups multiple AI-related projects into a single, reproducible packaging layer for Linux.
 
 ## Why?
 
-Many AI tools ship without first-class Linux support, or their installation story involves manual steps that break across updates. **ai-nix** solves this by:
+Many AI tools ship without first-class Linux support, or their installation story involves manual steps that break when versions shift. **ai-nix** addresses that by:
 
 - **Packaging each project with Nix** — fully reproducible builds, declarative dependencies, no "works-on-my-machine" issues.
-- **Staying auto-updatable** — [nvfetcher](https://github.com/berberman/nvfetcher) tracks upstream versions and prefetches hashes automatically, while `nix flake update` keeps `nixpkgs` current.
-- **Providing a unified interface** — one flake, many packages. Add `ai-nix` to your NixOS / home-manager config once and get every packaged tool.
+- **Tracking sources declaratively** — [nvfetcher](https://github.com/berberman/nvfetcher) resolves upstream versions and prefetches hashes, while `nix flake update` refreshes flake inputs when you choose.
+- **Choosing the right packaging layer** — some CLI-based tooling is better handled by `llm-agents.nix`, while `ai-nix` can still package CLI tools when it makes sense.
 
 ## Included packages
 
 | Package | Description | Status |
 |---------|-------------|--------|
-| [Codex Desktop](./pkgs/codex/) | [OpenAI Codex](https://openai.com/codex/) Desktop app ported to Linux | ✅ Available |
+| [Codex Desktop](./pkgs/codex-app/) | [OpenAI Codex](https://openai.com/codex/) Desktop app ported to Linux | ✅ Available |
 
 > [!TIP]
-> More packages will be added over time. Contributions are welcome!
+> The same structure supports additional packages. Contributions are welcome!
 
 ## Quick start
 
@@ -27,6 +27,8 @@ Many AI tools ship without first-class Linux support, or their installation stor
 # Run Codex Desktop
 nix run github:o-dasher/ai-nix#codex-desktop
 ```
+
+This flake does not package `codex-cli`. For CLI tools such as `codex`, `llm-agents.nix` is often the better fit, though `ai-nix` can still package CLI tools where that is useful. Make sure `codex` is available on `PATH` or via `CODEX_CLI_PATH` before launching `codex-desktop`.
 
 ### Add to your flake
 
@@ -42,11 +44,13 @@ nix run github:o-dasher/ai-nix#codex-desktop
 
 Then reference packages from `ai-nix.packages.${system}`.
 
-### Update
+Pair this flake with `llm-agents.nix` if you want CLI-based AI tooling in the same system configuration, especially for tools it already maintains.
+
+### Refresh inputs
 
 ```bash
-nix flake update   # updates nixpkgs + all inputs
-nix build          # rebuild with latest dependencies
+nix flake update   # refreshes nixpkgs + all inputs
+nix build          # rebuilds with the resolved dependencies
 ```
 
 ## Project structure
@@ -60,29 +64,29 @@ ai-nix/
 │   ├── generated.nix
 │   └── generated.json
 └── pkgs/
-    └── codex/         # Codex Desktop packaging
+    └── codex-app/     # Codex Desktop packaging
         └── package.nix
 ```
 
-New AI tools go under `pkgs/<tool-name>/` with their own `package.nix` and optional `README.md`.
+AI tools go under `pkgs/<tool-name>/` with their own `package.nix` and optional `README.md`.
 
-## Updating sources
+## Refreshing sources
 
 ```bash
-# Re-fetch latest upstream versions & hashes
+# Re-resolve upstream versions & hashes
 nvfetcher
 
-# Update nixpkgs and other flake inputs
+# Refresh nixpkgs and other flake inputs
 nix flake update
 ```
 
-`nvfetcher` reads `nvfetcher.toml`, checks for new upstream versions, prefetches hashes, and writes the results to `_sources/generated.nix`. Commit the updated `_sources/` after running it.
+`nvfetcher` reads `nvfetcher.toml`, resolves the configured upstream versions, prefetches hashes, and writes the results to `_sources/generated.nix`. Commit the resulting `_sources/` changes after running it.
 
 ## Contributing
 
 1. Fork & clone the repo.
 2. Create a new directory under `pkgs/` for your tool.
-3. Write a `package.nix` (see `pkgs/codex/package.nix` for reference).
+3. Write a `package.nix` (see `pkgs/codex-app/package.nix` for reference).
 4. Wire it up in `flake.nix`.
 5. Open a PR!
 
