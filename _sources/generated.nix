@@ -19,7 +19,7 @@
     version = "0.1.0";
     src = fetchurl {
       url = "https://persistent.oaistatic.com/codex-app-prod/Codex.dmg";
-      sha256 = "sha256-aBoSrEgaMQD79ALFHhVoMMZaC/b2zFGIXmjfdGhr23s=";
+      sha256 = "sha256-VxiV6TkbCy8QcPUJ5ziNzzPn/GSS+QSfIkIou94ye6A=";
     };
   };
   node-pty = {
