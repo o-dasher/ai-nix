@@ -8,10 +8,10 @@
 {
   better-sqlite3 = {
     pname = "better-sqlite3";
-    version = "12.5.0";
+    version = "12.8.0";
     src = fetchurl {
-      url = "https://registry.npmjs.org/better-sqlite3/-/better-sqlite3-12.5.0.tgz";
-      sha256 = "sha256-CjzQVUsGPDGFuZEu9wWbhEVaLkEdY3+qAWb++f76BMI=";
+      url = "https://registry.npmjs.org/better-sqlite3/-/better-sqlite3-12.8.0.tgz";
+      sha256 = "sha256-JgKlcm0KnY5r5AfFm8El5gURDtqOOwTn741t33YskSI=";
     };
   };
   codex-dmg = {
@@ -19,7 +19,7 @@
     version = "0.1.0";
     src = fetchurl {
       url = "https://persistent.oaistatic.com/codex-app-prod/Codex.dmg";
-      sha256 = "sha256-OBrTCjMh0olDk31OOkaYLKD7w8XMSbhAufSh+v6nI2E=";
+      sha256 = "sha256-ORJNHiI1oGanVf0/I3BDjMdyAOSzkq7qHGlbEZXIH2k=";
     };
   };
   node-pty = {

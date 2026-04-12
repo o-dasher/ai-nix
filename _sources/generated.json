@@ -8,11 +8,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-CjzQVUsGPDGFuZEu9wWbhEVaLkEdY3+qAWb++f76BMI=",
+            "sha256": "sha256-JgKlcm0KnY5r5AfFm8El5gURDtqOOwTn741t33YskSI=",
             "type": "url",
-            "url": "https://registry.npmjs.org/better-sqlite3/-/better-sqlite3-12.5.0.tgz"
+            "url": "https://registry.npmjs.org/better-sqlite3/-/better-sqlite3-12.8.0.tgz"
         },
-        "version": "12.5.0"
+        "version": "12.8.0"
     },
     "codex-dmg": {
         "cargoLock": null,
@@ -23,7 +23,7 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-OBrTCjMh0olDk31OOkaYLKD7w8XMSbhAufSh+v6nI2E=",
+            "sha256": "sha256-ORJNHiI1oGanVf0/I3BDjMdyAOSzkq7qHGlbEZXIH2k=",
             "type": "url",
             "url": "https://persistent.oaistatic.com/codex-app-prod/Codex.dmg"
         },

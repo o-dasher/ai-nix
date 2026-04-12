@@ -9,7 +9,7 @@ fetch.url = "https://persistent.oaistatic.com/codex-app-prod/Codex.dmg"
 # Update them when upstream ships a new DMG with bumped dependencies.
 
 [better-sqlite3]
-src.manual = "12.5.0"
+src.manual = "12.8.0"
 fetch.url = "https://registry.npmjs.org/better-sqlite3/-/better-sqlite3-$ver.tgz"
 
 [node-pty]
